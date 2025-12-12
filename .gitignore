@@ -1,0 +1,20 @@
+# Node
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+
+# Docker
+*.log
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Submodules build artifacts
+frontend/node_modules/
+backend/staticfiles/
