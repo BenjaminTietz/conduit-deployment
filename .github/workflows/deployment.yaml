@@ -59,7 +59,7 @@ jobs:
           script: |
             set -e
             cd ~/conduit-deployment
-
+            git pull origin dev
             docker compose pull
             docker compose down --remove-orphans -v
             docker compose up -d
