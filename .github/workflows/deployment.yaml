@@ -64,4 +64,6 @@ jobs:
             docker compose down --remove-orphans -v
             docker compose up -d
 
-            (sleep 900 && docker compose down) &
+            echo "⏳ Scheduling auto-shutdown in 15 minutes..."
+            nohup bash -c "sleep 900 && docker compose down" >/dev/null 2>&1 &
+            disown
