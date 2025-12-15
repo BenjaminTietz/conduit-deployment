@@ -59,6 +59,9 @@ jobs:
           script: |
             set -e
             cd ~/conduit-deployment
+
             docker compose pull
             docker compose down --remove-orphans -v
             docker compose up -d
+
+            (sleep 900 && docker compose down) &
