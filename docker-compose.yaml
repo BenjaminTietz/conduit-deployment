@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  backend:
+    image: ghcr.io/benjamintietz/conduit-backend:latest
+    container_name: conduit_backend
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - backend_static:/app/staticfiles
+    restart: on-failure
+
+  frontend:
+    image: ghcr.io/benjamintietz/conduit-frontend:latest
+    container_name: conduit_frontend
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8282:80"
+    depends_on:
+      - backend
+    restart: on-failure
+
+  db:
+    image: postgres:15-alpine
+    container_name: conduit_db
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: on-failure
+
+volumes:
+  db_data:
+  backend_static:
