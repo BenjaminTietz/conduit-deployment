@@ -1,3 +1,18 @@
+## Legal & Hosting Notice
+
+This project is intended **for educational purposes only**.
+
+The application is **not publicly hosted** and **not exposed to the internet** by default.
+This is a deliberate decision, as the project does **not include GDPR-required components**
+such as:
+
+- Privacy policy
+- Legal notice / imprint
+- Consent handling
+
+Do **not** deploy or expose this application publicly without adding the required
+legal and compliance-related features.
+
 # Conduit Deployment (Docker & CI/CD)
 
 ## Table of Contents
@@ -32,21 +47,6 @@ automatically during the CI pipeline.
 
 ---
 
-## Legal & Hosting Notice
-
-This project is intended **for educational purposes only**.
-
-The application is **not publicly hosted** and **not exposed to the internet** by default.
-This is a deliberate decision, as the project does **not include GDPR-required components**
-such as:
-
-- Privacy policy
-- Legal notice / imprint
-- Consent handling
-
-Do **not** deploy or expose this application publicly without adding the required
-legal and compliance-related features.
-
 ---
 
 ## Project Structure
@@ -80,6 +80,8 @@ If submodules were not cloned:
 ```bash
 git submodule update --init --recursive
 ```
+
+# The submodule configuration does not rely on the default branches of the included repositories
 
 ---
 
@@ -207,4 +209,4 @@ Benjamin Tietz
 
 ### 💻 Project Repository
 
-- https://github.com/BenjaminTietz/conduit-container
+- https://github.com/BenjaminTietz/conduit-deployment
