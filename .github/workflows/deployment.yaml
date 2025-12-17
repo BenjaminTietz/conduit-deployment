@@ -58,8 +58,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             set -e
+            mkdir -p ~/conduit-deployment
             cd ~/conduit-deployment
-            git pull origin dev
             docker compose pull
             docker compose down --remove-orphans -v
             docker compose up -d
