@@ -4,8 +4,18 @@ services:
   backend:
     image: ghcr.io/benjamintietz/conduit-backend:latest
     container_name: conduit_backend
-    env_file:
-      - .env
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS}
+
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
     ports:
       - "8000:8000"
     depends_on:
@@ -17,8 +27,8 @@ services:
   frontend:
     image: ghcr.io/benjamintietz/conduit-frontend:latest
     container_name: conduit_frontend
-    env_file:
-      - .env
+    environment:
+      BACKEND_API_URL: ${BACKEND_API_URL}
     ports:
       - "0.0.0.0:8282:80"
     depends_on:
@@ -28,8 +38,10 @@ services:
   db:
     image: postgres:15-alpine
     container_name: conduit_db
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
     restart: on-failure
