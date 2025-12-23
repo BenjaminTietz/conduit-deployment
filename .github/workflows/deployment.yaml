@@ -45,6 +45,8 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
+          build-args: |
+            BACKEND_API_URL=${{ secrets.BACKEND_API_URL }}
           tags: ghcr.io/benjamintietz/conduit-frontend:latest
 
       - name: Upload docker-compose file
