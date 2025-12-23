@@ -68,8 +68,7 @@ jobs:
               git pull origin dev
             fi
 
-            cd $HOME/conduit
-
+            cd "$HOME/conduit"
 
             docker compose pull
             docker compose down --remove-orphans
