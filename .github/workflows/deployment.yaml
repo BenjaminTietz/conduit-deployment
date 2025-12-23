@@ -59,20 +59,20 @@ jobs:
           script: |
             set -e
 
-            if [ ! -d "$HOME/conduit" ]; then
-              git clone --branch dev https://github.com/BenjaminTietz/conduit-deployment $HOME/conduit
+            if [ ! -d $HOME/conduit ]; then
+              git clone --branch dev https://github.com/BenjaminTietz/conduit-deployment.git $HOME/conduit
             else
-              cd $HOME/conduit"
+              cd $HOME/conduit
               git fetch origin
               git checkout dev
               git pull origin dev
             fi
 
-            cd "$HOME/conduit"
+            cd $HOME/conduit
 
             docker compose pull
             docker compose down --remove-orphans
             docker compose up -d
 
-            echo " Auto-shutdown in 15 minutes"
-            nohup bash -c "sleep 900 && docker compose down" >/dev/null 2>&1 &
+            echo Auto-shutdown in 15 minutes
+            nohup sh -c 'sleep 900 && docker compose down' >/dev/null 2>&1 &
