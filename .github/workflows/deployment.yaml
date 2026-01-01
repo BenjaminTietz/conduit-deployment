@@ -49,14 +49,44 @@ jobs:
             BACKEND_API_URL=${{ secrets.BACKEND_API_URL }}
           tags: ghcr.io/benjamintietz/conduit-frontend:latest
 
-      - name: Upload docker-compose file
+      - name: Create .env file from GitHub Secrets
+        run: |
+          cat <<EOF > .env
+          # =====================
+          # Frontend (Angular)
+          # =====================
+          BACKEND_API_URL=${{ secrets.BACKEND_API_URL }}
+
+          # =====================
+          # Backend (Django)
+          # =====================
+          DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          DJANGO_DEBUG=${{ secrets.DJANGO_DEBUG }}
+          DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}
+
+          CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }}
+          CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }}
+
+          # =====================
+          # Database
+          # =====================
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST=db
+          POSTGRES_PORT=5432
+          EOF
+
+      - name: Upload docker-compose and env file
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: docker-compose.yaml
+          source: |
+            docker-compose.yaml
+            .env
           target: /home/${{ secrets.SSH_USER }}/conduit/
 
       - name: Restart application stack
