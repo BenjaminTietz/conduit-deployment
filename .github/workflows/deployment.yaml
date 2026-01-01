@@ -49,18 +49,14 @@ jobs:
             BACKEND_API_URL=${{ secrets.BACKEND_API_URL }}
           tags: ghcr.io/benjamintietz/conduit-frontend:latest
 
-      - name: Create runtime .env file from GitHub Secrets
+      - name: Prepare deployment artifacts
         run: |
           mkdir -p deploy
+          cp docker-compose.yaml deploy/docker-compose.yaml
+
           cat <<EOF > deploy/.env
-          # =====================
-          # Frontend (Angular)
-          # =====================
           BACKEND_API_URL=${{ secrets.BACKEND_API_URL }}
 
-          # =====================
-          # Backend (Django)
-          # =====================
           DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
           DJANGO_DEBUG=${{ secrets.DJANGO_DEBUG }}
           DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}
@@ -68,9 +64,6 @@ jobs:
           CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }}
           CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }}
 
-          # =====================
-          # Database
-          # =====================
           POSTGRES_DB=${{ secrets.POSTGRES_DB }}
           POSTGRES_USER=${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
@@ -78,16 +71,14 @@ jobs:
           POSTGRES_PORT=5432
           EOF
 
-      - name: Upload docker-compose and env file
+      - name: Upload deployment artifacts
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: |
-            docker-compose.yaml
-            deploy/.env
+          source: deploy
           target: /home/${{ secrets.SSH_USER }}/conduit/
 
       - name: Restart application stack
@@ -99,7 +90,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             set -e
-            cd /home/${{ secrets.SSH_USER }}/conduit
+            cd /home/${{ secrets.SSH_USER }}/conduit/deploy
             docker compose pull
             docker compose down --remove-orphans
             docker compose up -d
