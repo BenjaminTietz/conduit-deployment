@@ -49,9 +49,10 @@ jobs:
             BACKEND_API_URL=${{ secrets.BACKEND_API_URL }}
           tags: ghcr.io/benjamintietz/conduit-frontend:latest
 
-      - name: Create .env file from GitHub Secrets
+      - name: Create runtime .env file from GitHub Secrets
         run: |
-          cat <<EOF > .env
+          mkdir -p deploy
+          cat <<EOF > deploy/.env
           # =====================
           # Frontend (Angular)
           # =====================
@@ -86,7 +87,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: |
             docker-compose.yaml
-            .env
+            deploy/.env
           target: /home/${{ secrets.SSH_USER }}/conduit/
 
       - name: Restart application stack
