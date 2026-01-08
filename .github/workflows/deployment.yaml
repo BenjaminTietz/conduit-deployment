@@ -59,8 +59,6 @@ jobs:
       - name: Prepare deployment artifacts
         run: |
           mkdir -p deploy
-          cp docker-compose.yaml deploy/docker-compose.yaml
-
           cat <<EOF > deploy/.env
           BACKEND_API_URL=${{ secrets.BACKEND_API_URL }}
 
