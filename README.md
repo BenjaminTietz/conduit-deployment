@@ -98,9 +98,9 @@ Frontend → http://localhost:8282
 The application is configured via a `.env` file.
 
 An example configuration is provided in  
-👉 [`env.template`](./env.template)
+[`env.template`](./env.template)
 
-### Setup
+---
 
 ### Setup
 
