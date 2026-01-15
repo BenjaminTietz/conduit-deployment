@@ -1,32 +1,16 @@
-## Legal & Hosting Notice
-
-This project is intended **for educational purposes only**.
-
-The application is **not publicly hosted** and **not exposed to the internet** by default.
-This is a deliberate decision, as the project does **not include GDPR-required components**
-such as:
-
-- Privacy policy
-- Legal notice / imprint
-- Consent handling
-
-Do **not** deploy or expose this application publicly without adding the required
-legal and compliance-related features.
-
 # Conduit Deployment (Docker & CI/CD)
 
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Legal & Hosting Notice](#legal--hosting-notice)
-3. [Project Structure](#project-structure)
-4. [Quickstart](#quickstart)
-5. [Environment Variables](#environment-variables)
-6. [CI/CD Deployment](#cicd-deployment)
-7. [Usage](#usage)
-8. [Logging](#logging)
-9. [Checklist](checklist.pdf)
-10. [Contact](#contact)
+2. [Project Structure](#project-structure)
+3. [Quickstart](#quickstart)
+4. [Environment Variables](#environment-variables)
+5. [CI/CD Deployment](#cicd-deployment)
+6. [Usage](#usage)
+7. [Logging](#logging)
+8. [Checklist](checklist.pdf)
+9. [Contact](#contact)
 
 ---
 
@@ -111,30 +95,19 @@ Frontend → http://localhost:8282
 
 ## Environment Variables
 
-The container uses `.env` to configure Django and PostgreSQL:
+The application is configured via a `.env` file.
 
-```env
-# =====================
-# Frontend (Angular)
-# =====================
-BACKEND_API_URL=http://backend:8000/api
+An example configuration is provided in  
+👉 [`env.template`](./env.template)
 
-# =====================
-# Backend (Django)
-# =====================
-DJANGO_SECRET_KEY=changeme
-DJANGO_DEBUG=True
-DJANGO_ALLOWED_HOSTS=*
+### Setup
 
-CORS_ALLOWED_ORIGINS=http://localhost:8282,http://127.0.0.1:8282
+### Setup
 
-POSTGRES_NAME=conduit
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_HOST=db
-POSTGRES_PORT=5432
+Copy the template and adjust the values as needed:
 
-```
+```bash
+cp env.template .env
 
 ---
 
@@ -159,8 +132,10 @@ No build steps are executed on the target VM.
 Run inside the backend container:
 
 ```
+
 docker exec -it conduit_backend bash
 python manage.py createsuperuser
+
 ```
 
 ---
@@ -170,8 +145,10 @@ python manage.py createsuperuser
 The production build is embedded in an NGINX container and served at:
 
 ```
+
 http://localhost:8282
-```
+
+````
 
 ---
 
@@ -185,7 +162,7 @@ Logs can be accessed via:
 ```bash
 docker logs conduit_backend
 docker logs conduit_frontend
-```
+````
 
 Logs can optionally be persisted by redirecting Docker logs to a file.
 
