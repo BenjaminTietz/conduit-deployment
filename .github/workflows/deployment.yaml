@@ -13,7 +13,7 @@ permissions:
 jobs:
   build:
     name: Build & Push Images
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -52,11 +52,11 @@ jobs:
 
   deploy:
     name: Deploy Application Stack
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build
 
     steps:
-      - name: Prepare deployment artifacts
+      - name: Prepare deployment environment
         run: |
           mkdir -p deploy
           cat <<EOF > deploy/.env
@@ -76,7 +76,7 @@ jobs:
           POSTGRES_PORT=5432
           EOF
 
-      - name: Upload deployment artifacts
+      - name: Upload deployment environment to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -86,7 +86,7 @@ jobs:
           source: deploy
           target: /home/${{ secrets.SSH_USER }}/conduit/
 
-      - name: Restart application stack
+      - name: Deploy application stack
         uses: appleboy/ssh-action@v1.2.4
         with:
           host: ${{ secrets.SSH_HOST }}
