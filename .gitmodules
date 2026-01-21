@@ -1,8 +1,8 @@
 [submodule "frontend"]
 	path = frontend
 	url = git@github.com:BenjaminTietz/conduit-frontend.git
-	branch = dev
+	branch = master
 [submodule "backend"]
 	path = backend
 	url = git@github.com:BenjaminTietz/conduit-backend.git
-	branch = dev
+	branch = master
